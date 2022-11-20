@@ -3,10 +3,10 @@
 import spawn from 'cross-spawn'
 import path from 'path'
 import dotenv from 'dotenv'
-import dotenvExpand from 'dotenv-expand'
+import { expand } from 'dotenv-expand'
 const argv = require('minimist')(process.argv.slice(2))
 
-function printHelp () {
+function printHelp() {
   console.log([
     'Usage: env-exec [--help] [--debug] [-e <path>] [-p <constiable name>] [-c [environment]] [-- command]',
     '  --help              print help',
@@ -50,7 +50,7 @@ if (argv.debug) {
 }
 
 paths.forEach(function (env: string) {
-  dotenvExpand(dotenv.config({ path: path.resolve(env) }))
+  expand(dotenv.config({ path: path.resolve(env) }))
 })
 
 if (argv.p) {
@@ -66,6 +66,6 @@ if (!command) {
 }
 
 spawn(command, argv._.slice(1), { stdio: 'inherit', shell: true })
-  .on('exit', function (exitCode:number) {
+  .on('exit', function (exitCode: number) {
     process.exit(exitCode)
   })
